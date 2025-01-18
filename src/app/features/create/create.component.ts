@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
+import { ProductsService } from '../../shared/services/products.service';
 
 
 @Component({
@@ -18,6 +19,9 @@ import { MatButtonModule } from '@angular/material/button';
   styleUrl: './create.component.scss'
 })
 export class CreateComponent {
+
+  productsService = inject(ProductsService);
+
   form = new FormGroup({
     Title: new FormControl<string>('', {
       nonNullable: true,
@@ -26,7 +30,13 @@ export class CreateComponent {
   });
 
   onSubmit() {
-    this.form.controls.Title.value;
+    this.productsService.post({
+      title: this.form.controls.Title.value
+    })
+    .subscribe(() => {
+      alert('Sucesso !')
+    });
+    
   }
 
 
